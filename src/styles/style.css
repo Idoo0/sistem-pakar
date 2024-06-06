@@ -1,0 +1,64 @@
+/* Additional styles for scrollbar */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0px;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+.hero {
+    background-image: url('../../assets/background/Background1.png'); /* Ganti dengan path gambar latar belakang Anda */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar {
+    z-index: 9999;
+    transition: all 0.1s linear;
+}
+
+.navbar-scrolled {
+    transition: all 0.1s linear;
+    background: rgba(78, 67, 67, 0.4);
+    backdrop-filter: blur(10px);
+    /* box-shadow: rgb(97, 92, 92) 0px -10px 10px 10px;  */
+}
+
+/* Responsive adjustments for images */
+img {
+    max-width: 100%; /* Ensure images do not exceed their container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+@media (max-width: 768px) {
+    /* Hide the coffee-cup image on smaller screens */
+    .coffee-cup {
+        display: none;
+    }
+}
