@@ -8,23 +8,28 @@ if (!isset($_SESSION['username'])) {
     header("Location: ../auth/login.php");
     exit(); // Terminate script execution after the redirect
 }
-if (isset($_POST["submit"])) {
 
-    if (create($_POST) > 0) {
-        echo "
+if(isset($_POST["submit"])){
+    
+    // var_dump($_POST);
+    // var_dump($_FILES);
+    // die();
+    if(create($_POST) > 0){
+      echo "
         <script>
           alert('data berhasil ditambahkan');
           document.location.href='admin-dashboard.php';
-
-    } else {
-        echo "
+        </script>
+      ";
+    }else{
+      echo "
         <script>
           alert('data gagal ditambahkan');
           document.location.href='admin-dashboard.php';
         </script>
       ";
     }
-}
+  }
 ?>
 
 <!DOCTYPE html>
