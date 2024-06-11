@@ -75,10 +75,10 @@ function update($data)
     $hasWifi = isset($_POST['hasWifi']) ? 1 : 0;
     $hasPermainan = isset($_POST['hasPermainan']) ? 1 : 0;
     $alamat = $_POST['alamat'];
+    $gambar = null;
 
-    $gambar = upload();
-    if (!$gambar) {
-        return false;
+    if ($_FILES['gambar']['name']) {
+        $gambar = upload();
     }
 
     $query = "UPDATE kafe SET
@@ -91,11 +91,16 @@ function update($data)
             hasWifi = '$hasWifi', 
             hasPermainan = '$hasPermainan',
             hasBuku = '$hasBuku',
-            alamat = '$alamat',
-            gambar = '$gambar'
-            WHERE id = '$id'
-        ";
+            alamat = '$alamat'
+            WHERE id = '$id'";
+
     mysqli_query($conn, $query);
+
+    if ($gambar) {
+        $query = "UPDATE kafe SET gambar = '$gambar' WHERE id = '$id'";
+        mysqli_query($conn, $query);
+    }
+
     return mysqli_affected_rows($conn);
 }
 
