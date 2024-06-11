@@ -130,6 +130,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../../dist/output.css" rel="stylesheet" />
     <link href="../styles/style.css" rel="stylesheet" />
     <link href="../../assets/ico/coffee-icon.png" rel="icon">
+    <style>
+        .tableHasilPerhitungan {
+            margin-top: 20px;
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .tableHasilPerhitungan h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+
+        .tableHasilPerhitungan table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tableHasilPerhitungan th,
+        .tableHasilPerhitungan td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        .tableHasilPerhitungan th {
+            background-color: #ffcc00;
+            color: #2c2c2c;
+        }
+
+        .tableHasilPerhitungan tr:nth-child(even) {
+            background-color: #383838;
+        }
+
+        .tableHasilPerhitungan tr:hover {
+            background-color: #4d4d4d;
+        }
+
+        .tableHasilPerhitungan td {
+            color: #ffffff;
+        }
+    </style>
 </head>
 
 <body class="m-0 p-0 bg-[#352D29] text-white">
@@ -334,6 +376,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             document.getElementById('address').textContent = '';
         }
     </script>
+   
+     <?php if (!empty($searchResults)): ?>
+        <div class="tableHasilPerhitungan">
+        <h2>Hasil Perhitungan</h2>
+        <table border="1">
+            <tr>
+                <th>Nama Kafe</th>
+                <th>Jarak</th>
+                <th>Harga</th>
+                <th>Fasilitas</th>
+                <th>Keindahan</th>
+                <th>Segi Rasa</th>
+                <th>WiFi</th>
+                <th>Permainan</th>
+                <th>Buku</th>
+                <th>Skor SAW</th>
+                <th>Skor TOPSIS</th>
+            </tr>
+            <?php foreach ($searchResults as $index => $kafe): ?>
+            <tr>
+                <td><?= htmlspecialchars($kafe['namaKafe']) ?></td>
+                <td><?= htmlspecialchars($kafe['jarak']) ?></td>
+                <td><?= htmlspecialchars($kafe['harga']) ?></td>
+                <td><?= htmlspecialchars($kafe['fasilitas']) ?></td>
+                <td><?= htmlspecialchars($kafe['keindahan']) ?></td>
+                <td><?= htmlspecialchars($kafe['segiRasa']) ?></td>
+                <td><?= htmlspecialchars($kafe['hasWifi']) ? 'Ya' : 'Tidak' ?></td>
+                <td><?= htmlspecialchars($kafe['hasPermainan']) ? 'Ya' : 'Tidak' ?></td>
+                <td><?= htmlspecialchars($kafe['hasBuku']) ? 'Ya' : 'Tidak' ?></td>
+                <td><?= htmlspecialchars($sawScores[$index]) ?></td>
+                <td><?= htmlspecialchars($topsisScores[$index]) ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        </div>
+    <?php endif; ?>
 </body>
 
 </html>
