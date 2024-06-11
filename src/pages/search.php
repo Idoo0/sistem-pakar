@@ -17,12 +17,6 @@ function calculateSAW($data, $weights)
             $score += $row['keindahan'] * $weights['keindahan'];
         if (isset($row['segiRasa']))
             $score += $row['segiRasa'] * $weights['segiRasa'];
-        if (isset($row['hasWifi']))
-            $score += $row['hasWifi'] * $weights['hasWifi'];
-        if (isset($row['hasPermainan']))
-            $score += $row['hasPermainan'] * $weights['hasPermainan'];
-        if (isset($row['hasBuku']))
-            $score += $row['hasBuku'] * $weights['hasBuku'];
         $scores[] = $score;
     }
     return $scores;
@@ -79,14 +73,11 @@ function calculateTOPSIS($data, $weights)
 
 // Contoh bobot untuk SAW dan TOPSIS
 $weights = [
-    'jarak' => 0.1,
-    'harga' => 0.2,
-    'fasilitas' => 0.15,
-    'keindahan' => 0.15,
-    'segiRasa' => 0.2,
-    'hasWifi' => 0.1,
-    'hasPermainan' => 0.05,
-    'hasBuku' => 0.05
+    'jarak' => 0.14,
+    'harga' => 0.19,
+    'fasilitas' => 0.29,
+    'keindahan' => 0.29,
+    'segiRasa' => 0.9
 ];
 
 $searchResults = [];
@@ -98,12 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $maxJarak = $_POST['maxJarak'];
     $minHarga = $_POST['minHarga'];
     $maxHarga = $_POST['maxHarga'];
-    $hasWifi = $_POST['hasWifi'];
-    $hasPermainan = $_POST['hasPermainan'];
-    $hasBuku = $_POST['hasBuku'];
 
     // Query untuk mendapatkan data berdasarkan filter
-    $sql = "SELECT * FROM kafe WHERE jarak BETWEEN $minJarak AND $maxJarak AND harga BETWEEN $minHarga AND $maxHarga AND hasWifi = $hasWifi AND hasPermainan = $hasPermainan AND hasBuku = $hasBuku";
+    $sql = "SELECT * FROM kafe WHERE jarak BETWEEN $minJarak AND $maxJarak AND harga BETWEEN $minHarga AND $maxHarga";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -209,7 +197,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5.121 17.804A12.027 12.027 0 0112 15c2.45 0 4.785.73 6.879 2.074M12 9a4 4 0 100-8 4 4 0 000 8zm-9 12a9 9 0 1118 0H3z" />
+                            d="M5.121 17.804A12.027 12.027 0 0112 15c2.45 0 4.785.73 6.879 2.074M12 9a4 4 0 100-8 4 4 0 000 8zm-9 15h18c.74 0 1.44-.27 2-.76A2.99 2.99 0 0021 21H3c-.74 0-1.44.27-2 .76A2.99 2.99 0 000 24c0-.74.27-1.44.76-2A2.99 2.99 0 003 21h18c.74 0 1.44-.27 2-.76A2.99 2.99 0 0021 21H3c-.74 0-1.44.27-2 .76A2.99 2.99 0 000 24c0-.74.27-1.44.76-2A2.99 2.99 0 003 21H21c.74 0 1.44-.27 2-.76A2.99 2.99 0 0024 21c0-.74-.27-1.44-.76-2A2.99 2.99 0 0021 21H3c-.74 0-1.44.27-2 .76A2.99 2.99 0 000 24c0-.74.27-1.44.76-2A2.99 2.99 0 003 21H21z">
+                        </path>
                     </svg>
                 </a>
             </div>
@@ -217,62 +206,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </nav>
 
     <!-- Main Content -->
-    <main class="pt-24 pb-8 px-4">
-        <div class="flex flex-col items-center justify-center max-w-6xl w-full mx-auto p-4 space-y-4">
-            <form method="POST" action="" class="bg-[#535050] p-4 rounded-lg w-full">
-                <h1 class="text-2xl mb-4 text-center">Search ur Cafe!</h1>
+    <main class="pt-24 p-10">
+        <div class="container mx-auto">
+            <h1 class="text-center text-4xl font-bold mb-8">Pencarian Cafe</h1>
 
-                <div class="flex flex-row space-x-4 w-full">
-                    <div class="flex flex-col w-1/8">
-                        <label for="minJarak" class="block text-lg mb-2 text-center">minJarak</label>
-                        <input type="number" name="minJarak" id="minJarak" class="w-full p-2 rounded"
-                            style="color: black;" min="0" required>
-                    </div>
-                    <div class="flex flex-col w-1/8">
-                        <label for="maxJarak" class="block text-lg mb-2 text-center">maxJarak</label>
-                        <input type="number" name="maxJarak" id="maxJarak" class="w-full p-2 rounded"
-                            style="color: black;" min="0" required>
-                    </div>
-                    <div class="flex flex-col w-1/8">
-                        <label for="minHarga" class="block text-lg mb-2 text-center">minHarga</label>
-                        <input type="numeric" name="minHarga" id="minHarga" class="w-full p-2 rounded no-spinner"
-                            style="color: black;" min="0" required>
-                    </div>
-                    <div class="flex flex-col w-1/8">
-                        <label for="maxHarga" class="block text-lg mb-2 text-center">maxHarga</label>
-                        <input type="numeric" name="maxHarga" id="maxHarga" class="w-full p-2 rounded no-spinner"
-                            style="color: black;" min="0" required>
-                    </div>
-                    <div class="flex flex-col w-2/8">
-                        <label for="hasWifi" class="block text-lg mb-2 text-center">Wifi</label>
-                        <select name="hasWifi" id="hasWifi" required class="w-full p-2 rounded" style="color: black;">
-                            <option value="1">Ya</option>
-                            <option value="0">Tidak</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col w-2/8">
-                        <label for="hasPermainan" class="block text-lg mb-2 text-center">Permainan</label>
-                        <select name="hasPermainan" id="hasPermainan" required class="w-full p-2 rounded"
-                            style="color: black;">
-                            <option value="1">Ya</option>
-                            <option value="0">Tidak</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col w-2/8">
-                        <label for="hasBuku" class="block text-lg mb-2 text-center">Buku</label>
-                        <select name="hasBuku" id="hasBuku" required class="w-full p-2 rounded" style="color: black;">
-                            <option value="1">Ya</option>
-                            <option value="0">Tidak</option>
-                        </select>
-                    </div>
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="max-w-3xl mx-auto bg-gray-800 p-6 rounded-lg">
+                <div class="mb-4">
+                    <label for="minJarak" class="block text-sm font-medium text-gray-400 mb-2">Jarak Minimum (KM)</label>
+                    <input type="number" id="minJarak" name="minJarak" class="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-gray-500" required>
                 </div>
-
-                <button type="submit" name="submit"
-                    class="w-full p-2 bg-yellow-500 text-white rounded mt-4">Cari</button>
+                <div class="mb-4">
+                    <label for="maxJarak" class="block text-sm font-medium text-gray-400 mb-2">Jarak Maximum (KM)</label>
+                    <input type="number" id="maxJarak" name="maxJarak" class="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-gray-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="minHarga" class="block text-sm font-medium text-gray-400 mb-2">Harga Minimum (Rp)</label>
+                    <input type="number" id="minHarga" name="minHarga" class="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-gray-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="maxHarga" class="block text-sm font-medium text-gray-400 mb-2">Harga Maximum (Rp)</label>
+                    <input type="number" id="maxHarga" name="maxHarga" class="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:border-gray-500" required>
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-yellow-500 text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-600">Cari Cafe</button>
+                </div>
             </form>
-        </div>
 
-        <?php if (!empty($searchResults)): ?>
+            <?php if (!empty($searchResults)): ?>
             <div class="container mx-auto">
                 <h1 class="text-4xl font-bold text-center mb-8">Pick ur Cafe!</h1>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -322,96 +282,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </div>
         <?php endif; ?>
-    </main>
-    <!-- Details Modal -->
-    <div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white text-black rounded-lg overflow-hidden w-11/12 md:w-1/2 flex flex-col items-center">
-            <div class="p-4 text-center">
-                <h2 id="cafeName" class="text-2xl font-bold mb-2"></h2>
-                <div id="facilities" class="flex justify-center space-x-4 mb-2"></div>
-                <p id="address" class="mb-4"></p>
-                <button class="bg-gray-700 text-white py-2 px-4 rounded" onclick="hideDetailsModal()">Close</button>
-            </div>
+
+            <?php if (!empty($searchResults)) : ?>
+                <div class="tableHasilPerhitungan">
+                    <h2>Hasil Pencarian dan Perhitungan SAW dan TOPSIS</h2>
+                    <table class="table-auto w-full">
+                        <thead>
+                            <tr>
+                                <th>ID Cafe</th>
+                                <th>Nama Cafe</th>
+                                <th>Jarak (KM)</th>
+                                <th>Harga (Rp)</th>
+                                <th>Fasilitas</th>
+                                <th>Keindahan</th>
+                                <th>Segi Rasa</th>
+                                <th>Skor SAW</th>
+                                <th>Skor TOPSIS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($searchResults as $index => $result) : ?>
+                                <tr>
+                                    <td><?php echo $result['id']; ?></td>
+                                    <td><?php echo $result['namaKafe']; ?></td>
+                                    <td><?php echo $result['jarak']; ?></td>
+                                    <td><?php echo $result['harga']; ?></td>
+                                    <td><?php echo $result['fasilitas']; ?></td>
+                                    <td><?php echo $result['keindahan']; ?></td>
+                                    <td><?php echo $result['segiRasa']; ?></td>
+                                    <td><?php echo $sawScores[$index]; ?></td>
+                                    <td><?php echo $topsisScores[$index]; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.querySelector(".mobile-menu-button");
-        const mobileMenu = document.querySelector(".navigation-menu");
-
-        mobileMenuButton.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
+        // JavaScript untuk mengelola mobile menu
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.navigation-menu').classList.toggle('hidden');
         });
-
-        // Navbar transparency on scroll
-        window.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 0) {
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-            }
-        });
-
-        function showDetailsModal(name, imageSrc, hasWifi, hasPermainan, hasBuku, address) {
-            document.getElementById('cafeName').textContent = name;
-
-            let facilities = '';
-            if (hasWifi) facilities += `<div class="icon-wrapper"><span>📶</span><div class="icon-tooltip">Wi-Fi</div></div>`;
-            if (hasPermainan) facilities += `<div class="icon-wrapper"><span>🃏</span><div class="icon-tooltip">Permainan Kartu</div></div>`;
-            if (hasBuku) facilities += `<div class="icon-wrapper"><span>📘</span><div class="icon-tooltip">Buku</div></div>`;
-            document.getElementById('facilities').innerHTML = facilities;
-
-            document.getElementById('address').textContent = address;
-
-            document.getElementById('detailsModal').classList.remove('hidden');
-        }
-
-        function hideDetailsModal() {
-            document.getElementById('detailsModal').classList.add('hidden');
-            document.getElementById('cafeName').textContent = '';
-            document.getElementById('cafeImage').src = '';
-            document.getElementById('facilities').innerHTML = '';
-            document.getElementById('address').textContent = '';
-        }
     </script>
-   
-     <?php if (!empty($searchResults)): ?>
-        <div class="tableHasilPerhitungan">
-        <h2>Hasil Perhitungan</h2>
-        <table border="1">
-            <tr>
-                <th>Nama Kafe</th>
-                <th>Jarak</th>
-                <th>Harga</th>
-                <th>Fasilitas</th>
-                <th>Keindahan</th>
-                <th>Segi Rasa</th>
-                <th>WiFi</th>
-                <th>Permainan</th>
-                <th>Buku</th>
-                <th>Skor SAW</th>
-                <th>Skor TOPSIS</th>
-            </tr>
-            <?php foreach ($searchResults as $index => $kafe): ?>
-            <tr>
-                <td><?= htmlspecialchars($kafe['namaKafe']) ?></td>
-                <td><?= htmlspecialchars($kafe['jarak']) ?></td>
-                <td><?= htmlspecialchars($kafe['harga']) ?></td>
-                <td><?= htmlspecialchars($kafe['fasilitas']) ?></td>
-                <td><?= htmlspecialchars($kafe['keindahan']) ?></td>
-                <td><?= htmlspecialchars($kafe['segiRasa']) ?></td>
-                <td><?= htmlspecialchars($kafe['hasWifi']) ? 'Ya' : 'Tidak' ?></td>
-                <td><?= htmlspecialchars($kafe['hasPermainan']) ? 'Ya' : 'Tidak' ?></td>
-                <td><?= htmlspecialchars($kafe['hasBuku']) ? 'Ya' : 'Tidak' ?></td>
-                <td><?= htmlspecialchars($sawScores[$index]) ?></td>
-                <td><?= htmlspecialchars($topsisScores[$index]) ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        </div>
-    <?php endif; ?>
+    
 </body>
 
 </html>
