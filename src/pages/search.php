@@ -55,7 +55,7 @@ function calculateTOPSIS($data, $weights)
 
     // Hitung jarak dari solusi ideal terbaik dan terburuk
     $distances = [];
-    try{
+    try {
         foreach ($normalized as $row) {
             $distanceToBest = 0;
             $distanceToWorst = 0;
@@ -69,10 +69,10 @@ function calculateTOPSIS($data, $weights)
             $distanceToWorst = sqrt($distanceToWorst);
             $distances[] = $distanceToWorst / ($distanceToBest + $distanceToWorst);
         }
-    
+
         return $distances;
 
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         return $distances;
     }
 }
@@ -272,6 +272,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     <?php endforeach; ?>
                 </div>
+            </div>
+        <?php else: ?>
+            <div class="container mx-auto">
+                <h1 class="text-4xl font-bold text-center mb-8">Cafe tidak ditemukan!</h1>
+
             </div>
         <?php endif; ?>
     </main>
