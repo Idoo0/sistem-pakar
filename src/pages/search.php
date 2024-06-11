@@ -55,21 +55,26 @@ function calculateTOPSIS($data, $weights)
 
     // Hitung jarak dari solusi ideal terbaik dan terburuk
     $distances = [];
-    foreach ($normalized as $row) {
-        $distanceToBest = 0;
-        $distanceToWorst = 0;
-        foreach ($weights as $key => $weight) {
-            if (isset($row[$key])) {
-                $distanceToBest += pow($row[$key] - $idealBest[$key], 2);
-                $distanceToWorst += pow($row[$key] - $idealWorst[$key], 2);
+    try{
+        foreach ($normalized as $row) {
+            $distanceToBest = 0;
+            $distanceToWorst = 0;
+            foreach ($weights as $key => $weight) {
+                if (isset($row[$key])) {
+                    $distanceToBest += pow($row[$key] - $idealBest[$key], 2);
+                    $distanceToWorst += pow($row[$key] - $idealWorst[$key], 2);
+                }
             }
+            $distanceToBest = sqrt($distanceToBest);
+            $distanceToWorst = sqrt($distanceToWorst);
+            $distances[] = $distanceToWorst / ($distanceToBest + $distanceToWorst);
         }
-        $distanceToBest = sqrt($distanceToBest);
-        $distanceToWorst = sqrt($distanceToWorst);
-        $distances[] = $distanceToWorst / ($distanceToBest + $distanceToWorst);
-    }
+    
+        return $distances;
 
-    return $distances;
+    } catch(Exception $e) {
+        return $distances;
+    }
 }
 
 // Contoh bobot untuk SAW dan TOPSIS
@@ -106,8 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $searchResults[] = $row;
         }
     }
-
-
 
     // Hitung skor SAW dan TOPSIS untuk hasil pencarian
     $sawScores = calculateSAW($searchResults, $weights);
