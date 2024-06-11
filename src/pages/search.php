@@ -276,6 +276,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php else: ?>
             <div class="container mx-auto">
                 <h1 class="text-4xl font-bold text-center mb-8">Cafe tidak ditemukan!</h1>
+                <h3 class="text-2xl text-center mb-8">lakukan atau ulang pencarian</h3>
 
             </div>
         <?php endif; ?>
