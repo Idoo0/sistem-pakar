@@ -181,22 +181,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="flex flex-col w-1/8">
                         <label for="minJarak" class="block text-lg mb-2 text-center">minJarak</label>
                         <input type="number" name="minJarak" id="minJarak" class="w-full p-2 rounded"
-                            style="color: black;">
+                            style="color: black;" min="0">
                     </div>
                     <div class="flex flex-col w-1/8">
                         <label for="maxJarak" class="block text-lg mb-2 text-center">maxJarak</label>
                         <input type="number" name="maxJarak" id="maxJarak" class="w-full p-2 rounded"
-                            style="color: black;">
+                            style="color: black;" min="0">
                     </div>
                     <div class="flex flex-col w-1/8">
                         <label for="minHarga" class="block text-lg mb-2 text-center">minHarga</label>
-                        <input type="number" name="minHarga" id="minHarga" class="w-full p-2 rounded"
-                            style="color: black;">
+                        <input type="numeric" name="minHarga" id="minHarga" class="w-full p-2 rounded no-spinner"
+                            style="color: black;" min="0">
                     </div>
                     <div class="flex flex-col w-1/8">
                         <label for="maxHarga" class="block text-lg mb-2 text-center">maxHarga</label>
-                        <input type="number" name="maxHarga" id="maxHarga" class="w-full p-2 rounded"
-                            style="color: black;">
+                        <input type="numeric" name="maxHarga" id="maxHarga" class="w-full p-2 rounded no-spinner"
+                            style="color: black;" min="0">
                     </div>
                     <div class="flex flex-col w-2/8">
                         <label for="hasWifi" class="block text-lg mb-2 text-center">Wifi</label>
