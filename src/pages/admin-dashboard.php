@@ -6,30 +6,46 @@ session_start();
 $kafe = read();
 if (!isset($_SESSION['username'])) {
     header("Location: ../auth/login.php");
-    exit(); // Terminate script execution after the redirect
+    exit();
 }
 
-if(isset($_POST["submit"])){
-    
-    // var_dump($_POST);
-    // var_dump($_FILES);
-    // die();
-    if(create($_POST) > 0){
-      echo "
+if (isset($_POST["submit"])) {
+
+    if (create($_POST) > 0) {
+        echo "
         <script>
           alert('data berhasil ditambahkan');
           document.location.href='admin-dashboard.php';
         </script>
       ";
-    }else{
-      echo "
+    } else {
+        echo "
         <script>
           alert('data gagal ditambahkan');
           document.location.href='admin-dashboard.php';
         </script>
       ";
     }
-  }
+}
+
+if (isset($_POST["submit-edit"])) {
+
+    if (update($_POST) > 0) {
+        echo "
+        <script>
+          alert('data berhasil diubah');
+          document.location.href='admin-dashboard.php';
+        </script>
+      ";
+    } else {
+        echo "
+        <script>
+          alert('data gagal diubah');
+          document.location.href='admin-dashboard.php';
+        </script>
+      ";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -100,13 +116,14 @@ if(isset($_POST["submit"])){
                             </td>
                             <td class="w-1/9 text-left py-3 px-4">
                                 <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                    onclick="showImageModal('../../assets/img/cafe.jpeg')">
+                                    onclick="showImageModal('<?= '../../assets/img/cafe/' . $k['gambar'] ?>')">
                                     View
                                 </button>
                             </td>
                             <td class="w-1/9 text-left py-3 px-4 flex space-x-2">
                                 <button
-                                    class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 flex items-center">
+                                    class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 flex items-center"
+                                    onclick="showEditModal(<?= $k['id'] ?>, '<?= $k['namaKafe'] ?>', <?= $k['jarak'] ?>, <?= $k['harga'] ?>, <?= $k['fasilitas'] ?>, <?= $k['keindahan'] ?>, <?= $k['segiRasa'] ?>, <?= $k['hasWifi'] ?>, <?= $k['hasPermainan'] ?>, <?= $k['hasBuku'] ?>, '<?= $k['alamat'] ?>', '<?= $k['gambar'] ?>')"
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -114,7 +131,7 @@ if(isset($_POST["submit"])){
                                     </svg>
                                     Edit
                                 </button>
-                                <a href="../../controller/delete.php?id=<?= $k["id"]?>">
+                                <a href="../../controller/delete.php?id=<?= $k["id"] ?>">
                                     <button
                                         class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none"
@@ -145,7 +162,7 @@ if(isset($_POST["submit"])){
         </div>
         <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
             <h2 class="text-xl font-bold mb-4">Add New Cafe</h2>
-            <form id="addCafeForm" method="POST" action="#">
+            <form id="addCafeForm" method="POST" action="#" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="nama" class="block text-sm font-medium text-black-700">Nama</label>
                     <input type="text" id="nama" name="nama"
@@ -176,6 +193,15 @@ if(isset($_POST["submit"])){
                     <input type="number" id="segiRasa" name="segiRasa"
                         class="mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
                 </div>
+                <div class="mb-4">
+                    <label for="alamat" class="block text-sm font-medium text-black-700">Alamat</label>
+                    <input type="text" id="alamat" name="alamat"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="gambar" class="block text-sm font-medium text-black-700">Gambar</label>
+                    <input type="file" name="gambar" id="gambar">
+                </div>
                 <div class="mb-4 flex items-center gap-x-8">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-black-700">Wifi</label>
@@ -196,6 +222,86 @@ if(isset($_POST["submit"])){
                         class="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-gray-600">Cancel</button>
                     <button type="submit" name="submit"
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Cafe Modal -->
+    <div id="editCafeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="absolute top-0 right-0 m-4">
+            <button class="text-white" onclick="hideEditModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+            <h2 class="text-xl font-bold mb-4">Edit Cafe</h2>
+            <form id="editCafeForm" method="POST" action="#" enctype="multipart/form-data">
+                <input type="hidden" id="id" name="id">
+                <div class="mb-4">
+                    <label for="editNama" class="block text-sm font-medium text-black-700">Nama</label>
+                    <input type="text" id="editNama" name="nama"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editJarak" class="block text-sm font-medium text-black-700">Jarak</label>
+                    <input type="number" id="editJarak" name="jarak"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editHarga" class="block text-sm font-medium text-black-700">Harga</label>
+                    <input type="number" id="editHarga" name="harga"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editFasilitas" class="block text-sm font-medium text-black-700">Fasilitas</label>
+                    <input type="number" id="editFasilitas" name="fasilitas"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editKeindahan" class="block text-sm font-medium text-black-700">Keindahan</label>
+                    <input type="number" id="editKeindahan" name="keindahan"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editSegiRasa" class="block text-sm font-medium text-black-700">Segi Rasa</label>
+                    <input type="number" id="editSegiRasa" name="segiRasa"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editAlamat" class="block text-sm font-medium text-black-700">Alamat</label>
+                    <input type="text" id="editAlamat" name="alamat"
+                        class="px-2 py-1 mt-1 block w-full rounded-md border-black-300 shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editGambar" class="block text-sm font-medium text-black-700">Gambar</label>
+                    <input type="file" name="gambar" id="editGambar">
+                </div>
+                <div class="mb-4 flex items-center gap-x-8">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-black-700">Wifi</label>
+                        <input type="checkbox" id="editHasWifi" name="hasWifi"
+                            class="rounded border-black-300 shadow-sm">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-black-700">Permainan</label>
+                        <input type="checkbox" id="editHasPermainan" name="hasPermainan"
+                            class="rounded border-black-300 shadow-sm">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-black-700">Buku</label>
+                        <input type="checkbox" id="editHasBuku" name="hasBuku"
+                            class="rounded border-black-300 shadow-sm">
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" onclick="hideEditModal()"
+                        class="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-gray-600">Cancel</button>
+                    <button type="submit" name="submit-edit"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Edit</button>
                 </div>
             </form>
         </div>
@@ -277,6 +383,26 @@ if(isset($_POST["submit"])){
         function hideAddModal() {
             document.getElementById('addCafeModal').classList.add('hidden');
             document.getElementById('addCafeForm').reset();
+        }
+
+        function showEditModal(id, nama, jarak, harga, fasilitas, keindahan, segiRasa, hasWifi, hasPermainan, hasBuku, alamat) {
+            
+            document.getElementById('id').value = id;
+            document.getElementById('editNama').value = nama;
+            document.getElementById('editJarak').value = jarak;
+            document.getElementById('editHarga').value = harga;
+            document.getElementById('editFasilitas').value = fasilitas;
+            document.getElementById('editKeindahan').value = keindahan;
+            document.getElementById('editSegiRasa').value = segiRasa;
+            document.getElementById('editHasWifi').checked = hasWifi;
+            document.getElementById('editHasPermainan').checked = hasPermainan;
+            document.getElementById('editHasBuku').checked = hasBuku;
+            document.getElementById('editAlamat').value = alamat;
+            document.getElementById('editCafeModal').classList.remove('hidden');
+        }
+        function hideEditModal() {
+            document.getElementById('editCafeModal').classList.add('hidden');
+            document.getElementById('editCafeForm').reset();
         }
     </script>
 </body>
