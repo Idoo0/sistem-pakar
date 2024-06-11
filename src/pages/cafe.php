@@ -107,17 +107,16 @@ $kafe = read();
     </main>
 
     <!-- Details Modal -->
-<!-- Details Modal -->
-<div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white text-black rounded-lg overflow-hidden w-11/12 md:w-1/2 flex flex-col items-center">
-        <div class="p-4 text-center">
-            <h2 id="cafeName" class="text-2xl font-bold mb-2"></h2>
-            <div id="facilities" class="flex justify-center space-x-4 mb-2"></div>
-            <p id="address" class="mb-4"></p>
-            <button class="bg-gray-700 text-white py-2 px-4 rounded" onclick="hideDetailsModal()">Close</button>
+    <div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white text-black rounded-lg overflow-hidden w-11/12 md:w-1/2 flex flex-col items-center">
+            <div class="p-4 text-center">
+                <h2 id="cafeName" class="text-2xl font-bold mb-2"></h2>
+                <div id="facilities" class="flex justify-center space-x-4 mb-2"></div>
+                <p id="address" class="mb-4"></p>
+                <button class="bg-gray-700 text-white py-2 px-4 rounded" onclick="hideDetailsModal()">Close</button>
+            </div>
         </div>
     </div>
-</div>
 
 
 

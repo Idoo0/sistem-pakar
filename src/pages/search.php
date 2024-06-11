@@ -2,25 +2,35 @@
 require '../../config.php'; // Menghubungkan ke file config.php
 
 // Fungsi untuk menghitung skor SAW
-function calculateSAW($data, $weights) {
+function calculateSAW($data, $weights)
+{
     $scores = [];
     foreach ($data as $row) {
         $score = 0;
-        if (isset($row['jarak'])) $score += $row['jarak'] * $weights['jarak'];
-        if (isset($row['harga'])) $score += $row['harga'] * $weights['harga'];
-        if (isset($row['fasilitas'])) $score += $row['fasilitas'] * $weights['fasilitas'];
-        if (isset($row['keindahan'])) $score += $row['keindahan'] * $weights['keindahan'];
-        if (isset($row['segiRasa'])) $score += $row['segiRasa'] * $weights['segiRasa'];
-        if (isset($row['hasWifi'])) $score += $row['hasWifi'] * $weights['hasWifi'];
-        if (isset($row['hasPermainan'])) $score += $row['hasPermainan'] * $weights['hasPermainan'];
-        if (isset($row['hasBuku'])) $score += $row['hasBuku'] * $weights['hasBuku'];
+        if (isset($row['jarak']))
+            $score += $row['jarak'] * $weights['jarak'];
+        if (isset($row['harga']))
+            $score += $row['harga'] * $weights['harga'];
+        if (isset($row['fasilitas']))
+            $score += $row['fasilitas'] * $weights['fasilitas'];
+        if (isset($row['keindahan']))
+            $score += $row['keindahan'] * $weights['keindahan'];
+        if (isset($row['segiRasa']))
+            $score += $row['segiRasa'] * $weights['segiRasa'];
+        if (isset($row['hasWifi']))
+            $score += $row['hasWifi'] * $weights['hasWifi'];
+        if (isset($row['hasPermainan']))
+            $score += $row['hasPermainan'] * $weights['hasPermainan'];
+        if (isset($row['hasBuku']))
+            $score += $row['hasBuku'] * $weights['hasBuku'];
         $scores[] = $score;
     }
     return $scores;
 }
 
 // Fungsi untuk menghitung skor TOPSIS
-function calculateTOPSIS($data, $weights) {
+function calculateTOPSIS($data, $weights)
+{
     $normalized = [];
     $idealBest = array_fill_keys(array_keys($weights), PHP_FLOAT_MIN);
     $idealWorst = array_fill_keys(array_keys($weights), PHP_FLOAT_MAX);
@@ -92,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $searchResults[] = $row;
         }
     }
@@ -164,148 +174,115 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Main Content -->
     <main class="pt-24 pb-8 px-4">
         <div class="flex flex-col items-center justify-center max-w-6xl w-full mx-auto p-4 space-y-4">
-            <form class="bg-[#535050] p-4 rounded-lg w-full md:w-3/4 lg:w-1/2">
+            <form method="POST" action="" class="bg-[#535050] p-4 rounded-lg w-full">
                 <h1 class="text-2xl mb-4 text-center">Search ur Cafe!</h1>
-                
-                <div class="flex flex-col space-y-4">
-                    <div class="flex flex-col md:flex-row md:gap-x-4 w-full">
-                        <div class="flex flex-col w-full md:w-1/5">
-                            <label for="harga" class="block text-lg mb-2 text-center md:text-left">Harga</label>
-                            <select id="harga" name="harga" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih</option>
-                                <option value="<30k" style="color: black;">&lt;30k</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
-                        <div class="flex flex-col w-full md:w-1/5">
-                            <label for="fasilitas" class="block text-lg mb-2 text-center md:text-left">Fasilitas</label>
-                            <select id="fasilitas" name="fasilitas" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih</option>
-                                <option value="wifi" style="color: black;">Wifi</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
-                        <div class="flex flex-col w-full md:w-1/5">
-                            <label for="jarak" class="block text-lg mb-2 text-center md:text-left">Jarak</label>
-                            <select id="jarak" name="jarak" class="w-full p-2 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih</option>
-                                <option value="<10km" style="color: black;">&lt;10km</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
-                        <div class="flex flex-col w-full md:w-1/5">
-                            <label for="harga" class="block text-lg mb-2 text-center md:text-left">Harga</label>
-                            <select id="harga" name="harga" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih</option>
-                                <option value="<30k" style="color: black;">&lt;30k</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
-                        <div class="flex flex-col w-full md:w-1/5">
-                            <label for="fasilitas" class="block text-lg mb-2 text-center md:text-left">Fasilitas</label>
-                            <select id="fasilitas" name="fasilitas" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih</option>
-                                <option value="wifi" style="color: black;">Wifi</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
+
+                <div class="flex flex-row space-x-4 w-full">
+                    <div class="flex flex-col w-1/8">
+                        <label for="minJarak" class="block text-lg mb-2 text-center">minJarak</label>
+                        <input type="number" name="minJarak" id="minJarak" class="w-full p-2 rounded"
+                            style="color: black;">
+                    </div>
+                    <div class="flex flex-col w-1/8">
+                        <label for="maxJarak" class="block text-lg mb-2 text-center">maxJarak</label>
+                        <input type="number" name="maxJarak" id="maxJarak" class="w-full p-2 rounded"
+                            style="color: black;">
+                    </div>
+                    <div class="flex flex-col w-1/8">
+                        <label for="minHarga" class="block text-lg mb-2 text-center">minHarga</label>
+                        <input type="number" name="minHarga" id="minHarga" class="w-full p-2 rounded"
+                            style="color: black;">
+                    </div>
+                    <div class="flex flex-col w-1/8">
+                        <label for="maxHarga" class="block text-lg mb-2 text-center">maxHarga</label>
+                        <input type="number" name="maxHarga" id="maxHarga" class="w-full p-2 rounded"
+                            style="color: black;">
+                    </div>
+                    <div class="flex flex-col w-2/8">
+                        <label for="hasWifi" class="block text-lg mb-2 text-center">Wifi</label>
+                        <select name="hasWifi" id="hasWifi" required class="w-full p-2 rounded" style="color: black;">
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col w-2/8">
+                        <label for="hasPermainan" class="block text-lg mb-2 text-center">Permainan</label>
+                        <select name="hasPermainan" id="hasPermainan" required class="w-full p-2 rounded"
+                            style="color: black;">
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col w-2/8">
+                        <label for="hasBuku" class="block text-lg mb-2 text-center">Buku</label>
+                        <select name="hasBuku" id="hasBuku" required class="w-full p-2 rounded" style="color: black;">
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
                     </div>
                 </div>
-                
-                <button type="submit" class="w-full p-2 bg-yellow-500 text-white rounded mt-4">Cari</button>
+
+                <button type="submit" name="submit"
+                    class="w-full p-2 bg-yellow-500 text-white rounded mt-4">Cari</button>
             </form>
         </div>
-        
-        
-        
-        
-        
-        <div class="container mx-auto">
-            <h1 class="text-4xl font-bold text-center mb-8">Pick ur Cafe!</h1>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Cafe Card -->
-                <div class="cafe-card rounded-lg text-center overflow-hidden">
-                    <img src="../../assets/img/cafe.jpeg" alt="Kopiko Cafe">
-                    <div class="p-4">
-                        <h2 class="text-xl font-bold mb-2">KOPIKO CAFE</h2>
-                        <div class="flex justify-center space-x-4 mb-2">
-                            <div class="icon-wrapper">
-                                <span>📶</span>
-                                <div class="icon-tooltip">Wi-Fi Available</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>🔌</span>
-                                <div class="icon-tooltip">Power Outlets</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>☕</span>
-                                <div class="icon-tooltip">Outside Food Allowed</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>🚬</span>
-                                <div class="icon-tooltip">Smoking Area</div>
-                            </div>
-                        </div>
-                        <p class="mb-4">30Km From Campus</p>
-                        <button class="details-button bg-gray-700 text-white py-2 px-4 rounded">See Details!</button>
-                    </div>
-                </div>
-                <div class="cafe-card rounded-lg text-center overflow-hidden">
-                    <img src="../../assets/img/cafe.jpeg" alt="Kopiko Cafe">
-                    <div class="p-4">
-                        <h2 class="text-xl font-bold mb-2">KOPIKO CAFE</h2>
-                        <div class="flex justify-center space-x-4 mb-2">
-                            <div class="icon-wrapper">
-                                <span>📶</span>
-                                <div class="icon-tooltip">Wi-Fi Available</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>🔌</span>
-                                <div class="icon-tooltip">Power Outlets</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>☕</span>
-                                <div class="icon-tooltip">Outside Food Allowed</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>🚬</span>
-                                <div class="icon-tooltip">Smoking Area</div>
+
+        <?php if (!empty($searchResults)): ?>
+            <div class="container mx-auto">
+                <h1 class="text-4xl font-bold text-center mb-8">Pick ur Cafe!</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Cafe Card -->
+                    <?php foreach ($searchResults as $index => $k): ?>
+                        <div class="cafe-card rounded-lg text-center overflow-hidden">
+                            <img src="<?= '../../assets/img/cafe/' . $k["gambar"] ?>" alt="Kopiko Cafe">
+                            <div class="p-4">
+                                <h2 class="text-xl font-bold mb-2">
+                                    <?= $k["namaKafe"] ?>
+                                </h2>
+                                <div class="flex justify-center space-x-4 mb-2">
+                                    <?php if ($k["hasWifi"]): ?>
+                                        <div class="icon-wrapper">
+                                            <span>📶</span>
+                                            <div class="icon-tooltip">Wi-Fi</div>
+                                        </div>
+                                    <?php endif ?>
+                                    <?php if ($k["hasPermainan"]): ?>
+                                        <div class="icon-wrapper">
+                                            <span>🃏</span>
+                                            <div class="icon-tooltip">Permainan Kartu</div>
+                                        </div>
+                                    <?php endif ?>
+                                    <?php if ($k["hasBuku"]): ?>
+                                        <div class="icon-wrapper">
+                                            <span>📘</span>
+                                            <div class="icon-tooltip">Buku</div>
+                                        </div>
+                                    <?php endif ?>
+                                </div>
+                                <p class="mb-4">
+                                    <?= $k["jarak"] . "km dari kampus" ?>
+                                </p>
+                                <button class="details-button bg-gray-700 text-white py-2 px-4 rounded"
+                                    onclick="showDetailsModal('<?= $k['namaKafe'] ?>', '<?= '../../assets/img/cafe/' . $k["gambar"] ?>', <?= $k['hasWifi'] ?>, <?= $k['hasPermainan'] ?>, <?= $k['hasBuku'] ?>, '<?= $k['alamat'] ?>')">See
+                                    Details!</button>
                             </div>
                         </div>
-                        <p class="mb-4">30Km From Campus</p>
-                        <button class="details-button bg-gray-700 text-white py-2 px-4 rounded">See Details!</button>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <div class="cafe-card rounded-lg text-center overflow-hidden">
-                    <img src="../../assets/img/cafe.jpeg" alt="Kopiko Cafe">
-                    <div class="p-4">
-                        <h2 class="text-xl font-bold mb-2">KOPIKO CAFE</h2>
-                        <div class="flex justify-center space-x-4 mb-2">
-                            <div class="icon-wrapper">
-                                <span>📶</span>
-                                <div class="icon-tooltip">Wi-Fi Available</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>🔌</span>
-                                <div class="icon-tooltip">Power Outlets</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>☕</span>
-                                <div class="icon-tooltip">Outside Food Allowed</div>
-                            </div>
-                            <div class="icon-wrapper">
-                                <span>🚬</span>
-                                <div class="icon-tooltip">Smoking Area</div>
-                            </div>
-                        </div>
-                        <p class="mb-4">30Km From Campus</p>
-                        <button class="details-button bg-gray-700 text-white py-2 px-4 rounded">See Details!</button>
-                    </div>
-                </div>
-                <!-- Add more cards as needed -->
+            </div>
+        <?php endif; ?>
+    </main>
+    <!-- Details Modal -->
+    <div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white text-black rounded-lg overflow-hidden w-11/12 md:w-1/2 flex flex-col items-center">
+            <div class="p-4 text-center">
+                <h2 id="cafeName" class="text-2xl font-bold mb-2"></h2>
+                <div id="facilities" class="flex justify-center space-x-4 mb-2"></div>
+                <p id="address" class="mb-4"></p>
+                <button class="bg-gray-700 text-white py-2 px-4 rounded" onclick="hideDetailsModal()">Close</button>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         // Mobile menu toggle
@@ -325,6 +302,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 navbar.classList.remove('navbar-scrolled');
             }
         });
+
+        function showDetailsModal(name, imageSrc, hasWifi, hasPermainan, hasBuku, address) {
+            document.getElementById('cafeName').textContent = name;
+
+            let facilities = '';
+            if (hasWifi) facilities += `<div class="icon-wrapper"><span>📶</span><div class="icon-tooltip">Wi-Fi</div></div>`;
+            if (hasPermainan) facilities += `<div class="icon-wrapper"><span>🃏</span><div class="icon-tooltip">Permainan Kartu</div></div>`;
+            if (hasBuku) facilities += `<div class="icon-wrapper"><span>📘</span><div class="icon-tooltip">Buku</div></div>`;
+            document.getElementById('facilities').innerHTML = facilities;
+
+            document.getElementById('address').textContent = address;
+
+            document.getElementById('detailsModal').classList.remove('hidden');
+        }
+
+        function hideDetailsModal() {
+            document.getElementById('detailsModal').classList.add('hidden');
+            document.getElementById('cafeName').textContent = '';
+            document.getElementById('cafeImage').src = '';
+            document.getElementById('facilities').innerHTML = '';
+            document.getElementById('address').textContent = '';
+        }
     </script>
 </body>
 
