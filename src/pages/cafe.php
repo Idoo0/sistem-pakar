@@ -3,8 +3,6 @@ require '../../config.php';
 include '../../controller/cafeController.php';
 
 $kafe = read();
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,9 +43,9 @@ $kafe = read();
             <!-- Primary Navigation -->
             <div
                 class="hidden md:flex md:flex-row flex-col items-center justify-start md:space-x-10 navigation-menu pb-3 md:pb-0 navigation-menu flex-1">
-                <a href="index.html" class="py-2 px-3 block text-2xl">Home</a>
-                <a href="cafe.html" class="py-2 px-3 block text-2xl">Cafe</a>
-                <a href="search.html" class="py-2 px-3 block text-2xl">Search</a>
+                <a href="index.php" class="py-2 px-3 block text-2xl">Home</a>
+                <a href="cafe.php" class="py-2 px-3 block text-2xl">Cafe</a>
+                <a href="search.php" class="py-2 px-3 block text-2xl">Search</a>
             </div>
             <!-- User Icon -->
             <div class="hidden md:flex items-center">
@@ -70,41 +68,58 @@ $kafe = read();
                 <!-- Cafe Card -->
                 <?php foreach ($kafe as $k): ?>
                     <div class="cafe-card rounded-lg text-center overflow-hidden">
-                        <img src="../../assets/img/cafe.jpeg" alt="Kopiko Cafe">
+                        <img src="<?= '../../assets/img/cafe/' . $k["gambar"] ?>" alt="Kopiko Cafe">
                         <div class="p-4">
                             <h2 class="text-xl font-bold mb-2">
                                 <?= $k["namaKafe"] ?>
                             </h2>
                             <div class="flex justify-center space-x-4 mb-2">
                                 <?php if ($k["hasWifi"]): ?>
-                                <div class="icon-wrapper">
-                                    <span>📶</span>
-                                    <div class="icon-tooltip">Wi-Fi</div>
-                                </div>
+                                    <div class="icon-wrapper">
+                                        <span>📶</span>
+                                        <div class="icon-tooltip">Wi-Fi</div>
+                                    </div>
                                 <?php endif ?>
                                 <?php if ($k["hasPermainan"]): ?>
-                                <div class="icon-wrapper">
-                                    <span>🃏</span>
-                                    <div class="icon-tooltip">Permainan Kartu</div>
-                                </div>
+                                    <div class="icon-wrapper">
+                                        <span>🃏</span>
+                                        <div class="icon-tooltip">Permainan Kartu</div>
+                                    </div>
                                 <?php endif ?>
                                 <?php if ($k["hasBuku"]): ?>
-                                <div class="icon-wrapper">
-                                    <span>📘</span>
-                                    <div class="icon-tooltip">Buku</div>
-                                </div>
+                                    <div class="icon-wrapper">
+                                        <span>📘</span>
+                                        <div class="icon-tooltip">Buku</div>
+                                    </div>
                                 <?php endif ?>
                             </div>
                             <p class="mb-4">
-                                <?= $k["jarak"] . "km dari kampus"?>
+                                <?= $k["jarak"] . "km dari kampus" ?>
                             </p>
-                            <button class="details-button bg-gray-700 text-white py-2 px-4 rounded">See Details!</button>
+                            <button class="details-button bg-gray-700 text-white py-2 px-4 rounded"
+                                onclick="showDetailsModal('<?= $k['namaKafe'] ?>', '<?= '../../assets/img/cafe/' . $k["gambar"] ?>', <?= $k['hasWifi'] ?>, <?= $k['hasPermainan'] ?>, <?= $k['hasBuku'] ?>, '<?= $k['alamat'] ?>')">See
+                                Details!</button>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
     </main>
+
+    <!-- Details Modal -->
+<!-- Details Modal -->
+<div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white text-black rounded-lg overflow-hidden w-11/12 md:w-1/2 flex flex-col items-center">
+        <div class="p-4 text-center">
+            <h2 id="cafeName" class="text-2xl font-bold mb-2"></h2>
+            <div id="facilities" class="flex justify-center space-x-4 mb-2"></div>
+            <p id="address" class="mb-4"></p>
+            <button class="bg-gray-700 text-white py-2 px-4 rounded" onclick="hideDetailsModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+
 
     <script>
         // Mobile menu toggle
@@ -124,6 +139,28 @@ $kafe = read();
                 navbar.classList.remove('navbar-scrolled');
             }
         });
+
+        function showDetailsModal(name, imageSrc, hasWifi, hasPermainan, hasBuku, address) {
+            document.getElementById('cafeName').textContent = name;
+
+            let facilities = '';
+            if (hasWifi) facilities += `<div class="icon-wrapper"><span>📶</span><div class="icon-tooltip">Wi-Fi</div></div>`;
+            if (hasPermainan) facilities += `<div class="icon-wrapper"><span>🃏</span><div class="icon-tooltip">Permainan Kartu</div></div>`;
+            if (hasBuku) facilities += `<div class="icon-wrapper"><span>📘</span><div class="icon-tooltip">Buku</div></div>`;
+            document.getElementById('facilities').innerHTML = facilities;
+
+            document.getElementById('address').textContent = address;
+
+            document.getElementById('detailsModal').classList.remove('hidden');
+        }
+
+        function hideDetailsModal() {
+            document.getElementById('detailsModal').classList.add('hidden');
+            document.getElementById('cafeName').textContent = '';
+            document.getElementById('cafeImage').src = '';
+            document.getElementById('facilities').innerHTML = '';
+            document.getElementById('address').textContent = '';
+        }
     </script>
 </body>
 

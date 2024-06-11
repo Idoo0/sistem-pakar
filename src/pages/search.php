@@ -37,9 +37,9 @@
             <!-- Primary Navigation -->
             <div
                 class="hidden md:flex md:flex-row flex-col items-center justify-start md:space-x-10 navigation-menu pb-3 md:pb-0 navigation-menu flex-1">
-                <a href="index.html" class="py-2 px-3 block text-2xl">Home</a>
-                <a href="cafe.html" class="py-2 px-3 block text-2xl">Cafe</a>
-                <a href="search.html" class="py-2 px-3 block text-2xl">Search</a>
+                <a href="index.php" class="py-2 px-3 block text-2xl">Home</a>
+                <a href="cafe.php" class="py-2 px-3 block text-2xl">Cafe</a>
+                <a href="search.php" class="py-2 px-3 block text-2xl">Search</a>
             </div>
             <!-- User Icon -->
             <div class="hidden md:flex items-center">
@@ -62,27 +62,43 @@
                 
                 <div class="flex flex-col space-y-4">
                     <div class="flex flex-col md:flex-row md:gap-x-4 w-full">
-                        <div class="flex flex-col w-full md:w-1/3">
+                        <div class="flex flex-col w-full md:w-1/5">
                             <label for="harga" class="block text-lg mb-2 text-center md:text-left">Harga</label>
                             <select id="harga" name="harga" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih Harga</option>
+                                <option value="" disabled selected hidden>Pilih</option>
                                 <option value="<30k" style="color: black;">&lt;30k</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>
-                        <div class="flex flex-col w-full md:w-1/3">
+                        <div class="flex flex-col w-full md:w-1/5">
                             <label for="fasilitas" class="block text-lg mb-2 text-center md:text-left">Fasilitas</label>
                             <select id="fasilitas" name="fasilitas" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih Fasilitas</option>
+                                <option value="" disabled selected hidden>Pilih</option>
                                 <option value="wifi" style="color: black;">Wifi</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>
-                        <div class="flex flex-col w-full md:w-1/3">
+                        <div class="flex flex-col w-full md:w-1/5">
                             <label for="jarak" class="block text-lg mb-2 text-center md:text-left">Jarak</label>
                             <select id="jarak" name="jarak" class="w-full p-2 rounded" style="color: black;">
-                                <option value="" disabled selected hidden>Pilih Jarak</option>
+                                <option value="" disabled selected hidden>Pilih</option>
                                 <option value="<10km" style="color: black;">&lt;10km</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <div class="flex flex-col w-full md:w-1/5">
+                            <label for="harga" class="block text-lg mb-2 text-center md:text-left">Harga</label>
+                            <select id="harga" name="harga" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
+                                <option value="" disabled selected hidden>Pilih</option>
+                                <option value="<30k" style="color: black;">&lt;30k</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <div class="flex flex-col w-full md:w-1/5">
+                            <label for="fasilitas" class="block text-lg mb-2 text-center md:text-left">Fasilitas</label>
+                            <select id="fasilitas" name="fasilitas" class="w-full p-2 mb-4 md:mb-0 rounded" style="color: black;">
+                                <option value="" disabled selected hidden>Pilih</option>
+                                <option value="wifi" style="color: black;">Wifi</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>

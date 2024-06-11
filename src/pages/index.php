@@ -37,9 +37,9 @@
             <!-- Primary Navigation -->
             <div
                 class="hidden md:flex md:flex-row flex-col items-center justify-start md:space-x-10 navigation-menu pb-3 md:pb-0 navigation-menu flex-1">
-                <a href="index.html" class="py-2 px-3 block text-2xl">Home</a>
-                <a href="cafe.html" class="py-2 px-3 block text-2xl">Cafe</a>
-                <a href="search.html" class="py-2 px-3 block text-2xl">Search</a>
+                <a href="index.php" class="py-2 px-3 block text-2xl">Home</a>
+                <a href="cafe.php" class="py-2 px-3 block text-2xl">Cafe</a>
+                <a href="search.php" class="py-2 px-3 block text-2xl">Search</a>
             </div>
             <!-- User Icon -->
             <div class="hidden md:flex items-center">

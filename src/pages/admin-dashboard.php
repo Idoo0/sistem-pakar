@@ -110,7 +110,7 @@ if (isset($_POST["submit-edit"])) {
                             </td>
                             <td class="w-1/9 text-left py-3 px-4">
                                 <button class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
-                                    onclick="showDetailsModal('<?= $k['namaKafe'] ?>', <?= $k['hasWifi'] ?>, <?= $k['hasPermainan'] ?>, <?= $k['hasBuku'] ?>, 'Jl. Dahlia Kleak Malalayang Bahu Manado')">
+                                    onclick="showDetailsModal('<?= $k['namaKafe'] ?>', <?= $k['hasWifi'] ?>, <?= $k['hasPermainan'] ?>, <?= $k['hasBuku'] ?>, '<?= $k['alamat'] ?>')">
                                     Facilities
                                 </button>
                             </td>
